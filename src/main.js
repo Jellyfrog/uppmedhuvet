@@ -1,6 +1,5 @@
 import './style.css'
-import Alpine from 'alpinejs'
-import game from './game.js'
+import { mount } from 'svelte'
+import App from './App.svelte'
 
-Alpine.data('game', game)
-Alpine.start()
+mount(App, { target: document.getElementById('app') })
