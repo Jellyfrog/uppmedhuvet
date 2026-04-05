@@ -1,0 +1,26 @@
+export default {
+  sv: [
+    'Albert Einstein', 'Beyoncé', 'Leonardo DiCaprio', 'Taylor Swift',
+    'Elon Musk', 'Cristiano Ronaldo', 'Zlatan Ibrahimović', 'ABBA',
+    'Astrid Lindgren', 'Greta Thunberg', 'Avicii', 'Selena Gomez',
+    'Dwayne Johnson', 'Oprah Winfrey', 'David Beckham', 'Rihanna',
+    'Lionel Messi', 'Adele', 'Brad Pitt', 'Angelina Jolie',
+    'Will Smith', 'Shakira', 'Ed Sheeran', 'Billie Eilish',
+    'Ariana Grande', 'Drake', 'Harry Styles', 'Lady Gaga',
+    'Bruno Mars', 'Katy Perry', 'Justin Bieber', 'Robyn',
+    'Ingvar Kamprad', 'Alfred Nobel', 'Roxette', 'Zara Larsson',
+    'Måns Zelmerlöw', 'Björn Borg', 'Ingmar Bergman', 'Dolph Lundgren',
+  ],
+  en: [
+    'Albert Einstein', 'Beyoncé', 'Leonardo DiCaprio', 'Taylor Swift',
+    'Elon Musk', 'Cristiano Ronaldo', 'Zlatan Ibrahimović', 'ABBA',
+    'Astrid Lindgren', 'Greta Thunberg', 'Avicii', 'Selena Gomez',
+    'Dwayne Johnson', 'Oprah Winfrey', 'David Beckham', 'Rihanna',
+    'Lionel Messi', 'Adele', 'Brad Pitt', 'Angelina Jolie',
+    'Will Smith', 'Shakira', 'Ed Sheeran', 'Billie Eilish',
+    'Ariana Grande', 'Drake', 'Harry Styles', 'Lady Gaga',
+    'Bruno Mars', 'Katy Perry', 'Justin Bieber', 'Robyn',
+    'Ingvar Kamprad', 'Alfred Nobel', 'Roxette', 'Zara Larsson',
+    'Måns Zelmerlöw', 'Björn Borg', 'Ingmar Bergman', 'Dolph Lundgren',
+  ],
+}
