@@ -8,7 +8,7 @@
   import { createWebHaptics } from 'web-haptics/svelte'
   import { onDestroy } from 'svelte'
 
-  const { trigger, destroy } = createWebHaptics()
+  const { trigger, destroy } = createWebHaptics({ showSwitch: true })
   onDestroy(destroy)
 
   // Wire haptics: state.svelte.js calls onHaptic callback on each mark

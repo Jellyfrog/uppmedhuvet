@@ -76,6 +76,13 @@ html, body {
 }
 
 
+/* Hide web-haptics switch element offscreen (not display:none, so iOS haptics still fire) */
+label[for^="web-haptics"] {
+  opacity: 0 !important;
+  position: fixed !important;
+  left: -9999px !important;
+}
+
 /* Fallback buttons for no-gyro */
 .fallback-btn {
   transition: opacity 0.15s;
