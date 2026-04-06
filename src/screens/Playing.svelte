@@ -4,6 +4,10 @@
     getTimeLeft, getRoundSeconds, getShowFlash, getShowFallback,
     markCorrect, markPass,
   } from '../state.svelte.js'
+  import { onDebug } from '../orientation.js'
+
+  let debug = $state(null)
+  onDebug((data) => { debug = data })
 
   function focusOnMount(node) { node.focus() }
 </script>
@@ -69,4 +73,19 @@
   <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white/10 text-sm font-mono text-white" aria-label="Score: {getCorrectCount()} correct">
     {getCorrectCount()} ✓
   </div>
+
+  <!-- Debug overlay -->
+  {#if debug}
+    <div class="fixed top-10 left-2 px-3 py-2 rounded-lg bg-black/80 text-xs font-mono text-green-400 z-50 pointer-events-none">
+      <div>x: {debug.x?.toFixed(2)}</div>
+      <div>y: {debug.y?.toFixed(2)}</div>
+      <div class="text-lg font-bold {debug.z > debug.threshold ? 'text-green-400' : debug.z < -debug.threshold ? 'text-red-400' : 'text-white'}">
+        z: {debug.z?.toFixed(2)}
+      </div>
+      <div class="text-white/50">threshold: ±{debug.threshold}</div>
+      <div class="text-white/50">cooldown: {debug.cooldown}</div>
+      <div class="mt-1 text-white/40">z &gt; {debug.threshold} = CORRECT</div>
+      <div class="text-white/40">z &lt; -{debug.threshold} = PASS</div>
+    </div>
+  {/if}
 </section>

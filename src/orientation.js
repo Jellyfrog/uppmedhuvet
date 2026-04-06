@@ -7,14 +7,19 @@ let listener = null
 let cooldown = false
 let onCorrect = null
 let onPass = null
+let debugCallback = null
+
+export function onDebug(cb) { debugCallback = cb }
 
 function handleMotion(event) {
-  if (cooldown) return
-
   const accel = event.accelerationIncludingGravity
-  if (!accel || accel.z == null) return
+  if (!accel) return
+  const { x, y, z } = accel
+  if (z == null) return
 
-  const z = accel.z
+  if (debugCallback) debugCallback({ x, y, z, cooldown, threshold: TILT_THRESHOLD })
+
+  if (cooldown) return
 
   if (z > TILT_THRESHOLD) {
     vibrate(200)
