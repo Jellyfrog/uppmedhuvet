@@ -85,6 +85,8 @@
       </div>
       <div class="text-white/50">threshold: ±{debug.threshold}</div>
       <div class="text-white/50">cooldown: {debug.cooldown}</div>
+      <div class="text-white/50">vibrate: {typeof navigator !== 'undefined' && !!navigator.vibrate ? 'YES' : 'NO'}</div>
+      <div class="text-white/50">orient: {typeof screen !== 'undefined' ? screen.orientation?.type : '?'}</div>
       <div class="mt-1 text-white/40">z &gt; {debug.threshold} = CORRECT</div>
       <div class="text-white/40">z &lt; -{debug.threshold} = PASS</div>
     </div>
