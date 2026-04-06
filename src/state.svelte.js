@@ -188,9 +188,16 @@ function releaseWakeLock() {
 async function requestFullscreen() {
   const el = document.documentElement
   const rfs = el.requestFullscreen || el.webkitRequestFullscreen
-  if (rfs) try { await rfs.call(el) } catch { /* fullscreen not available */ }
+  if (rfs) {
+    try {
+      await rfs.call(el)
+      // Lock to landscape once in fullscreen (requires fullscreen on most browsers)
+      try { await screen.orientation.lock('landscape') } catch { /* lock not supported */ }
+    } catch { /* fullscreen not available */ }
+  }
 }
 function exitFullscreen() {
+  try { screen.orientation.unlock() } catch { /* unlock not supported */ }
   const efs = document.exitFullscreen || document.webkitExitFullscreen
   if (efs && (document.fullscreenElement || document.webkitFullscreenElement)) {
     try { efs.call(document) } catch { /* fullscreen exit unsupported */ }

@@ -1,5 +1,5 @@
 // Tilt detection using accelerometer (works in both portrait and landscape).
-// Phone on forehead: z ≈ 0. Nod down (correct): z goes negative. Nod up (pass): z goes positive.
+// Phone on forehead: z ≈ 0. Tilt down (correct): z goes positive. Tilt up (pass): z goes negative.
 const TILT_THRESHOLD = 3.5 // m/s² ≈ 21° tilt from vertical
 const COOLDOWN_MS = 1500
 
@@ -16,12 +16,11 @@ function handleMotion(event) {
 
   const z = accel.z
 
-  // W3C spec: face-up z = +9.81, face-down z = -9.81, forehead z ≈ 0
-  // Nod down → screen faces ground → z decreases (negative)
-  // Nod up → screen faces sky → z increases (positive)
-  if (z < -TILT_THRESHOLD) {
+  if (z > TILT_THRESHOLD) {
+    vibrate(200)
     trigger(onCorrect)
-  } else if (z > TILT_THRESHOLD) {
+  } else if (z < -TILT_THRESHOLD) {
+    vibrate([100, 50, 100])
     trigger(onPass)
   }
 }
@@ -30,6 +29,10 @@ function trigger(cb) {
   cooldown = true
   setTimeout(() => { cooldown = false }, COOLDOWN_MS)
   if (cb) cb()
+}
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern)
 }
 
 export function startListening(correctCb, passCb) {
