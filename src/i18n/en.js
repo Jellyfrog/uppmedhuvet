@@ -14,6 +14,7 @@ export default {
   noGyroscope: 'No gyroscope found — use the buttons',
   rotate: 'Rotate your phone to landscape',
   enableMotion: 'Enable Motion Sensor',
+  timeLimit: 'Time Limit',
   tiltDown: 'Tilt down = Correct',
   tiltUp: 'Tilt up = Pass',
   wordsGuessed: 'words guessed',

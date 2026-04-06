@@ -1,7 +1,6 @@
 <script>
   import {
-    tr, getLang, getHasGyroscope, getOrientationGranted,
-    getPermissionDenied, categoryKeys, changeLang, enableMotion, selectCategory,
+    tr, getLang, categoryKeys, changeLang, selectCategory,
   } from '../state.svelte.js'
 
   function focusOnMount(node) { node.focus() }
@@ -17,19 +16,6 @@
       {getLang() === 'sv' ? 'English' : 'Svenska'}
     </button>
   </div>
-
-  {#if getPermissionDenied() && !getOrientationGranted()}
-    <button
-      onclick={enableMotion}
-      class="mb-4 px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm animate-pulse"
-    >
-      {tr('enableMotion')}
-    </button>
-  {/if}
-
-  {#if !getHasGyroscope()}
-    <p class="mb-4 text-sm text-yellow-400 text-center">{tr('noGyroscope')}</p>
-  {/if}
 
   <div class="w-full max-w-2xl grid grid-cols-2 gap-3 sm:gap-4">
     {#each categoryKeys as cat (cat)}

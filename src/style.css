@@ -18,6 +18,20 @@ html, body {
   user-select: none;
 }
 
+/* Force landscape: rotate the entire page when in portrait */
+@media (orientation: portrait) {
+  html {
+    transform: rotate(90deg);
+    transform-origin: top left;
+    width: 100vh;
+    height: 100vw;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    overflow: hidden;
+  }
+}
+
 /* Screen transitions */
 .screen {
   transition: opacity 0.2s ease, transform 0.2s ease;
@@ -61,17 +75,6 @@ html, body {
   50% { transform: scale(1.15); opacity: 0.8; }
 }
 
-/* Landscape prompt overlay */
-@media (orientation: portrait) {
-  .landscape-only {
-    display: flex !important;
-  }
-}
-@media (orientation: landscape) {
-  .landscape-only {
-    display: none !important;
-  }
-}
 
 /* Fallback buttons for no-gyro */
 .fallback-btn {

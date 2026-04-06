@@ -19,6 +19,7 @@ export default [
         AudioContext: 'readonly',
         webkitAudioContext: 'readonly',
         DeviceOrientationEvent: 'readonly',
+        screen: 'readonly',
         fetch: 'readonly',
       },
     },

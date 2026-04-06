@@ -1,7 +1,7 @@
 <script>
   import {
     tr, getCurrentWord, getCorrectCount, getTimerPercent,
-    getTimeLeft, getShowFlash, getShowFallback,
+    getTimeLeft, getRoundSeconds, getShowFlash, getShowFallback,
     markCorrect, markPass,
   } from '../state.svelte.js'
 
@@ -16,7 +16,7 @@
       role="progressbar"
       aria-valuenow={getTimeLeft()}
       aria-valuemin={0}
-      aria-valuemax={60}
+      aria-valuemax={getRoundSeconds()}
       aria-label="Time remaining"
       style="width: {getTimerPercent()}%"
     ></div>

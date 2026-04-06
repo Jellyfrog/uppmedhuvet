@@ -14,6 +14,7 @@ export default {
   noGyroscope: 'Inget gyroskop hittat — använd knapparna',
   rotate: 'Rotera telefonen till liggande läge',
   enableMotion: 'Aktivera rörelsesensor',
+  timeLimit: 'Tidsgräns',
   tiltDown: 'Luta ner = Rätt',
   tiltUp: 'Luta upp = Pass',
   wordsGuessed: 'ord gissade',

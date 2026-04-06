@@ -23,7 +23,7 @@ All game state lives in `src/state.svelte.js` using Svelte 5 runes (`$state`, `$
 
 ### Screen Flow
 
-`lang-select → menu → countdown → playing → results`
+`lang-select → menu → setup → countdown → playing → results`
 
 `src/App.svelte` is a thin router that switches on `getScreen()`. Each screen is a separate Svelte component in `src/screens/`.
 

@@ -6,19 +6,22 @@ import {
   isSupported, needsPermission,
 } from './orientation.js'
 
-const ROUND_SECONDS = 60
+const TIME_OPTIONS = [30, 45, 60, 90, 120]
+const DEFAULT_TIME = 60
 const hasGyroscope = isSupported()
 const gyroNeedsPermission = needsPermission()
 
 export const categoryKeys = Object.keys(categories)
+export { TIME_OPTIONS }
 
 let screen = $state('lang-select')
 let lang = $state('sv')
 let category = $state(null)
+let roundSeconds = $state(DEFAULT_TIME)
 let words = $state([])
 let wordIndex = $state(0)
 let results = $state([])
-let timeLeft = $state(ROUND_SECONDS)
+let timeLeft = $state(DEFAULT_TIME)
 let countdownNumber = $state(3)
 let showFlash = $state(null)
 let orientationGranted = $state(false)
@@ -33,7 +36,7 @@ let flashTimeout = null
 let currentWord = $derived(words[wordIndex] || '')
 let correctCount = $derived(results.filter(r => r.result === 'correct').length)
 let passCount = $derived(results.filter(r => r.result === 'pass').length)
-let timerPercent = $derived((timeLeft / ROUND_SECONDS) * 100)
+let timerPercent = $derived((timeLeft / roundSeconds) * 100)
 let showFallback = $derived(!hasGyroscope || (gyroNeedsPermission && !orientationGranted))
 
 export function tr(key) {
@@ -48,6 +51,7 @@ export function getCorrectCount() { return correctCount }
 export function getPassCount() { return passCount }
 export function getTimerPercent() { return timerPercent }
 export function getTimeLeft() { return timeLeft }
+export function getRoundSeconds() { return roundSeconds }
 export function getCountdownNumber() { return countdownNumber }
 export function getShowFlash() { return showFlash }
 export function getHasGyroscope() { return hasGyroscope }
@@ -78,15 +82,23 @@ export async function enableMotion() {
   permissionDenied = !orientationGranted
 }
 
-export async function selectCategory(cat) {
+export function selectCategory(cat) {
   category = cat
-  words = shuffle(getWords(cat, lang))
+  screen = 'setup'
+}
+
+export function setRoundSeconds(s) {
+  roundSeconds = s
+}
+
+export async function startGame() {
+  words = shuffle(getWords(category, lang))
   wordIndex = 0
   results = []
-  timeLeft = ROUND_SECONDS
+  timeLeft = roundSeconds
   showFlash = null
 
-  // Auto-request motion permission on category select (needs user gesture context)
+  // Auto-request motion permission (needs user gesture context)
   if (hasGyroscope && gyroNeedsPermission && !orientationGranted) {
     orientationGranted = await requestPermission()
     permissionDenied = !orientationGranted
@@ -162,7 +174,7 @@ function endGame() {
 }
 
 export function goToMenu() { screen = 'menu' }
-export function playAgain() { selectCategory(category) }
+export function playAgain() { startGame() }
 
 async function acquireWakeLock() {
   if ('wakeLock' in navigator) {
