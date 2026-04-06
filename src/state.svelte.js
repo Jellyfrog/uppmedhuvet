@@ -141,20 +141,15 @@ async function startPlaying() {
   }, 1000)
 }
 
-function vibrate(pattern) {
-  // Use setTimeout(0) to escape sensor event context — some browsers
-  // block navigator.vibrate() inside devicemotion handlers
-  setTimeout(() => {
-    if (navigator.vibrate) navigator.vibrate(pattern)
-  }, 0)
-}
+let hapticCallback = null
+export function onHaptic(cb) { hapticCallback = cb }
 
 function mark(type, playSound) {
   if (screen !== 'playing' || tapCooldown) return
   tapCooldown = true
   setTimeout(() => { tapCooldown = false }, 500)
   results.push({ word: currentWord, result: type })
-  vibrate(type === 'correct' ? 300 : [100, 80, 100])
+  if (hapticCallback) hapticCallback(type)
   resumeAudio()
   playSound()
   flash(type)

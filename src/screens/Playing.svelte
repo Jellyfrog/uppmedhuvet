@@ -2,9 +2,19 @@
   import {
     tr, getCurrentWord, getCorrectCount, getTimerPercent,
     getTimeLeft, getRoundSeconds, getShowFlash, getShowFallback,
-    markCorrect, markPass,
+    markCorrect, markPass, onHaptic,
   } from '../state.svelte.js'
   import { onDebug } from '../orientation.js'
+  import { createWebHaptics } from 'web-haptics/svelte'
+  import { onDestroy } from 'svelte'
+
+  const { trigger, destroy } = createWebHaptics()
+  onDestroy(destroy)
+
+  // Wire haptics: state.svelte.js calls onHaptic callback on each mark
+  onHaptic((type) => {
+    trigger(type === 'correct' ? 'heavy' : 'error', { intensity: 1 })
+  })
 
   let debug = $state(null)
   const showDebug = new URLSearchParams(window.location.search).has('debug')
