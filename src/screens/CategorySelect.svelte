@@ -1,7 +1,7 @@
 <script>
   import {
     tr, getLang, getHasGyroscope, getOrientationGranted, getNeedsPermission,
-    categoryKeys, changeLang, enableMotion, selectCategory,
+    getPermissionDenied, categoryKeys, changeLang, enableMotion, selectCategory,
   } from '../state.svelte.js'
 
   function focusOnMount(node) { node.focus() }
@@ -18,7 +18,7 @@
     </button>
   </div>
 
-  {#if getNeedsPermission() && !getOrientationGranted()}
+  {#if getPermissionDenied() && !getOrientationGranted()}
     <button
       onclick={enableMotion}
       class="mb-4 px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm animate-pulse"
