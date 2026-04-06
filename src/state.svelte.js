@@ -166,7 +166,7 @@ export function playAgain() { selectCategory(category) }
 
 async function acquireWakeLock() {
   if ('wakeLock' in navigator) {
-    try { wakeLock = await navigator.wakeLock.request('screen') } catch (e) { /* wake lock not available */ }
+    try { wakeLock = await navigator.wakeLock.request('screen') } catch { /* wake lock not available */ }
   }
 }
 function releaseWakeLock() {
@@ -176,11 +176,11 @@ function releaseWakeLock() {
 async function requestFullscreen() {
   const el = document.documentElement
   const rfs = el.requestFullscreen || el.webkitRequestFullscreen
-  if (rfs) try { await rfs.call(el) } catch (e) { /* fullscreen not available */ }
+  if (rfs) try { await rfs.call(el) } catch { /* fullscreen not available */ }
 }
 function exitFullscreen() {
   const efs = document.exitFullscreen || document.webkitExitFullscreen
   if (efs && (document.fullscreenElement || document.webkitFullscreenElement)) {
-    try { efs.call(document) } catch (e) { /* fullscreen exit unsupported */ }
+    try { efs.call(document) } catch { /* fullscreen exit unsupported */ }
   }
 }

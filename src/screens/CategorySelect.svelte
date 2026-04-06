@@ -1,6 +1,6 @@
 <script>
   import {
-    tr, getLang, getHasGyroscope, getOrientationGranted, getNeedsPermission,
+    tr, getLang, getHasGyroscope, getOrientationGranted,
     getPermissionDenied, categoryKeys, changeLang, enableMotion, selectCategory,
   } from '../state.svelte.js'
 
@@ -32,7 +32,7 @@
   {/if}
 
   <div class="w-full max-w-2xl grid grid-cols-2 gap-3 sm:gap-4">
-    {#each categoryKeys as cat}
+    {#each categoryKeys as cat (cat)}
       <button
         onclick={() => selectCategory(cat)}
         aria-label={tr(`categories.${cat}`)}
