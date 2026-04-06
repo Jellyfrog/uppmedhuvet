@@ -7,7 +7,8 @@
   import { onDebug } from '../orientation.js'
 
   let debug = $state(null)
-  onDebug((data) => { debug = data })
+  const showDebug = new URLSearchParams(window.location.search).has('debug')
+  if (showDebug) onDebug((data) => { debug = data })
 
   function focusOnMount(node) { node.focus() }
 </script>

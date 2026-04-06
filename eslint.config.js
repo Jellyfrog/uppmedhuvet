@@ -21,6 +21,7 @@ export default [
         DeviceOrientationEvent: 'readonly',
         DeviceMotionEvent: 'readonly',
         screen: 'readonly',
+        URLSearchParams: 'readonly',
         fetch: 'readonly',
       },
     },
