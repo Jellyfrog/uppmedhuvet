@@ -22,6 +22,7 @@ let timeLeft = $state(ROUND_SECONDS)
 let countdownNumber = $state(3)
 let showFlash = $state(null)
 let orientationGranted = $state(false)
+let permissionDenied = $state(false)
 
 let timerInterval = null
 let countdownInterval = null
@@ -70,17 +71,27 @@ export function changeLang() {
   setLang(lang === 'sv' ? 'en' : 'sv')
 }
 
+export function getPermissionDenied() { return permissionDenied }
+
 export async function enableMotion() {
   orientationGranted = await requestPermission()
+  permissionDenied = !orientationGranted
 }
 
-export function selectCategory(cat) {
+export async function selectCategory(cat) {
   category = cat
   words = shuffle(getWords(cat, lang))
   wordIndex = 0
   results = []
   timeLeft = ROUND_SECONDS
   showFlash = null
+
+  // Auto-request motion permission on category select (needs user gesture context)
+  if (hasGyroscope && gyroNeedsPermission && !orientationGranted) {
+    orientationGranted = await requestPermission()
+    permissionDenied = !orientationGranted
+  }
+
   startCountdown()
 }
 
@@ -121,6 +132,7 @@ function mark(type, playSound) {
   tapCooldown = true
   setTimeout(() => { tapCooldown = false }, 500)
   results.push({ word: currentWord, result: type })
+  resumeAudio()
   playSound()
   flash(type)
   nextWord()
