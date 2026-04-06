@@ -25,13 +25,14 @@ let orientationGranted = $state(false)
 let timerInterval = null
 let countdownInterval = null
 let wakeLock = null
+let tapCooldown = false
 
 // Derived
 let currentWord = $derived(words[wordIndex] || '')
 let correctCount = $derived(results.filter(r => r.result === 'correct').length)
 let passCount = $derived(results.filter(r => r.result === 'pass').length)
 let timerPercent = $derived((timeLeft / ROUND_SECONDS) * 100)
-let hasGyroscope = $derived(isSupported())
+const hasGyroscope = isSupported()
 let showFallback = $derived(!hasGyroscope || (needsPermission() && !orientationGranted))
 
 // i18n helper
@@ -81,6 +82,7 @@ export function selectCategory(cat) {
 }
 
 function startCountdown() {
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null }
   screen = 'countdown'
   countdownNumber = 3
   countdownInterval = setInterval(() => {
@@ -109,7 +111,9 @@ async function startPlaying() {
 }
 
 export function markCorrect() {
-  if (screen !== 'playing') return
+  if (screen !== 'playing' || tapCooldown) return
+  tapCooldown = true
+  setTimeout(() => { tapCooldown = false }, 500)
   results = [...results, { word: currentWord, result: 'correct' }]
   playCorrect()
   flash('correct')
@@ -117,7 +121,9 @@ export function markCorrect() {
 }
 
 export function markPass() {
-  if (screen !== 'playing') return
+  if (screen !== 'playing' || tapCooldown) return
+  tapCooldown = true
+  setTimeout(() => { tapCooldown = false }, 500)
   results = [...results, { word: currentWord, result: 'pass' }]
   playPass()
   flash('pass')
