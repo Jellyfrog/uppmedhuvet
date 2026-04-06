@@ -6,11 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev      # Start Vite dev server with HMR
-npm run build    # Production build → dist/
+npm run lint     # Run ESLint on src/
+npm run build    # Lint + production build → dist/
 npm run preview  # Preview production build locally
 ```
 
-No test runner or linter is configured.
+ESLint is configured with `eslint-plugin-svelte`. No test runner is configured.
 
 ## Architecture
 

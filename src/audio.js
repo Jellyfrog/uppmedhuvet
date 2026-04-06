@@ -21,7 +21,7 @@ function playTone(freq, duration, type = 'sine', volume = 0.3, delay = 0) {
     gain.gain.exponentialRampToValueAtTime(0.01, start + duration / 1000)
     osc.start(start)
     osc.stop(start + duration / 1000)
-  } catch (e) { /* audio unsupported or blocked — fail silently */ }
+  } catch { /* audio unsupported or blocked — fail silently */ }
 }
 
 export function playCorrect() {

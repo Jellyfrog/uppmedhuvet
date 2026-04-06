@@ -22,7 +22,7 @@
   </div>
 
   <div class="w-full max-w-md space-y-2 mb-6">
-    {#each getResults() as item}
+    {#each getResults() as item (item.word)}
       <div
         class="flex items-center justify-between px-4 py-3 rounded-xl {item.result === 'correct' ? 'bg-correct/15' : 'bg-pass/15'}"
       >
