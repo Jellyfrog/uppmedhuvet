@@ -11,7 +11,7 @@ export default {
   score: 'Poäng',
   playAgain: 'Spela igen',
   backToMenu: 'Tillbaka',
-  noGyroscope: 'Ingen gyroskop hittad — använd knapparna',
+  noGyroscope: 'Inget gyroskop hittat — använd knapparna',
   rotate: 'Rotera telefonen till liggande läge',
   enableMotion: 'Aktivera rörelsesensor',
   tiltDown: 'Luta ner = Rätt',

@@ -1,6 +1,6 @@
 # Upp med huvudet! 🎉
 
-A **Heads Up!** style party game built with Vite, Tailwind CSS v4, and Alpine.js v3.
+A **Heads Up!** style party game built with Vite, Tailwind CSS v4, and Svelte 5.
 
 ## How to play
 
@@ -42,7 +42,7 @@ Pushing to `main` auto-deploys to GitHub Pages via Actions.
 
 - [Vite](https://vite.dev) — build tool
 - [Tailwind CSS v4](https://tailwindcss.com) — styling
-- [Alpine.js v3](https://alpinejs.dev) — reactivity
+- [Svelte 5](https://svelte.dev) — reactivity
 - Web Audio API — sound effects
 - Device Orientation API — tilt controls
 - Screen Wake Lock API — keeps screen on during play
