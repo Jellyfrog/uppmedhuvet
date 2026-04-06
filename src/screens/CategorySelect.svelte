@@ -3,9 +3,11 @@
     tr, getLang, getHasGyroscope, getOrientationGranted, getNeedsPermission,
     categoryKeys, changeLang, enableMotion, selectCategory,
   } from '../state.svelte.js'
+
+  function focusOnMount(node) { node.focus() }
 </script>
 
-<section class="fixed inset-0 flex flex-col items-center p-4 sm:p-6 overflow-y-auto bg-bg">
+<section use:focusOnMount tabindex="-1" class="fixed inset-0 flex flex-col items-center p-4 sm:p-6 overflow-y-auto bg-bg outline-none">
   <div class="w-full max-w-2xl flex items-center justify-between mb-6 mt-2">
     <h2 class="text-2xl sm:text-3xl font-bold text-white">{tr('selectCategory')}</h2>
     <button
@@ -33,6 +35,7 @@
     {#each categoryKeys as cat}
       <button
         onclick={() => selectCategory(cat)}
+        aria-label={tr(`categories.${cat}`)}
         class="category-card flex flex-col items-center justify-center gap-2 p-5 sm:p-6 rounded-2xl bg-bg-light border border-white/10 hover:border-primary/50 hover:bg-bg-light/80 text-white"
       >
         <span class="text-3xl sm:text-4xl">{tr(`categoryEmojis.${cat}`)}</span>

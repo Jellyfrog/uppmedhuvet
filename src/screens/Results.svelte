@@ -3,9 +3,11 @@
     tr, getCorrectCount, getPassCount, getResults,
     goToMenu, playAgain,
   } from '../state.svelte.js'
+
+  function focusOnMount(node) { node.focus() }
 </script>
 
-<section class="fixed inset-0 flex flex-col items-center p-4 sm:p-6 overflow-y-auto bg-bg">
+<section use:focusOnMount tabindex="-1" class="fixed inset-0 flex flex-col items-center p-4 sm:p-6 overflow-y-auto bg-bg outline-none">
   <h2 class="text-3xl sm:text-4xl font-black mt-4 mb-2 text-white">{tr('results')}</h2>
 
   <div class="flex gap-6 mb-6 text-lg text-white">

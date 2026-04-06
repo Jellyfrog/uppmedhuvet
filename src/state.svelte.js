@@ -55,14 +55,19 @@ export function getOrientationGranted() { return orientationGranted }
 export function getResults() { return results }
 export function getNeedsPermission() { return gyroNeedsPermission }
 
-export function selectLanguage(l) {
+function setLang(l) {
   lang = l
+  document.documentElement.lang = l
+}
+
+export function selectLanguage(l) {
+  setLang(l)
   resumeAudio()
   screen = 'menu'
 }
 
 export function changeLang() {
-  lang = lang === 'sv' ? 'en' : 'sv'
+  setLang(lang === 'sv' ? 'en' : 'sv')
 }
 
 export async function enableMotion() {
@@ -83,13 +88,15 @@ function startCountdown() {
   if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null }
   screen = 'countdown'
   countdownNumber = 3
+  playCountdownBeep()
   countdownInterval = setInterval(() => {
-    playCountdownBeep()
     countdownNumber--
     if (countdownNumber <= 0) {
       clearInterval(countdownInterval)
       countdownInterval = null
       startPlaying()
+    } else {
+      playCountdownBeep()
     }
   }, 1000)
 }
@@ -97,7 +104,7 @@ function startCountdown() {
 async function startPlaying() {
   screen = 'playing'
   await acquireWakeLock()
-  requestFullscreen()
+  await requestFullscreen()
 
   if (hasGyroscope && (orientationGranted || !gyroNeedsPermission)) {
     startListening(markCorrect, markPass)
@@ -147,19 +154,21 @@ export function playAgain() { selectCategory(category) }
 
 async function acquireWakeLock() {
   if ('wakeLock' in navigator) {
-    try { wakeLock = await navigator.wakeLock.request('screen') } catch {}
+    try { wakeLock = await navigator.wakeLock.request('screen') } catch (e) { /* wake lock not available */ }
   }
 }
 function releaseWakeLock() {
   if (wakeLock) { wakeLock.release(); wakeLock = null }
 }
 
-function requestFullscreen() {
+async function requestFullscreen() {
   const el = document.documentElement
   const rfs = el.requestFullscreen || el.webkitRequestFullscreen
-  if (rfs) try { rfs.call(el) } catch {}
+  if (rfs) try { await rfs.call(el) } catch (e) { /* fullscreen not available */ }
 }
 function exitFullscreen() {
   const efs = document.exitFullscreen || document.webkitExitFullscreen
-  if (efs && document.fullscreenElement) try { efs.call(document) } catch {}
+  if (efs && (document.fullscreenElement || document.webkitFullscreenElement)) {
+    try { efs.call(document) } catch (e) { /* fullscreen exit unsupported */ }
+  }
 }

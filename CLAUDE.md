@@ -32,11 +32,11 @@ Translations in `src/i18n/sv.js` and `src/i18n/en.js` as nested objects. Access 
 
 ### Dictionaries
 
-Word lists in `src/dictionaries/<category>.js`, each exporting `{ sv: string[], en: string[] }`. To add a category: create a new file, import it in `src/dictionaries/index.js`, add to the `categories` object, and add category name/emoji entries to both `src/i18n/sv.js` and `src/i18n/en.js`.
+Word lists in `src/dictionaries/<category>.js`, each exporting `{ sv: string[], en: string[] }`. To add a category: create a new file, import it in `src/dictionaries/index.js`, add to the `categories` object, add category name translations to both `src/i18n/sv.js` and `src/i18n/en.js`, and add the emoji to the `categoryEmojis` map in `src/i18n/index.js`.
 
 ### Device APIs
 
-- **Orientation** (`src/orientation.js`): Uses `beta` axis — >130° = correct, <50° = pass. 1.5s cooldown between triggers. iOS 13+ requires `DeviceOrientationEvent.requestPermission()` from a user gesture.
+- **Orientation** (`src/orientation.js`): Uses `beta` axis — |beta| > 130° = correct (tilt down), |beta| < 50° = pass (tilt up). 1.5s cooldown between triggers, including an initial cooldown on game start. iOS 13+ requires `DeviceOrientationEvent.requestPermission()` from a user gesture.
 - **Audio** (`src/audio.js`): Lazy-initialized `AudioContext` singleton. Programmatic tones via oscillators (no audio files). All sounds silently fail if unsupported.
 - **Wake Lock & Fullscreen**: Acquired on game start, released on game end.
 
