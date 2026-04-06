@@ -1,9 +1,8 @@
 <script>
   import {
-    tr, getLang, getHasGyroscope, getOrientationGranted,
+    tr, getLang, getHasGyroscope, getOrientationGranted, getNeedsPermission,
     categoryKeys, changeLang, enableMotion, selectCategory,
   } from '../state.svelte.js'
-  import { needsPermission } from '../orientation.js'
 </script>
 
 <section class="fixed inset-0 flex flex-col items-center p-4 sm:p-6 overflow-y-auto bg-bg">
@@ -17,7 +16,7 @@
     </button>
   </div>
 
-  {#if needsPermission() && !getOrientationGranted()}
+  {#if getNeedsPermission() && !getOrientationGranted()}
     <button
       onclick={enableMotion}
       class="mb-4 px-6 py-3 rounded-xl bg-primary text-white font-bold text-sm animate-pulse"

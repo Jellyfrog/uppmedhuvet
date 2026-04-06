@@ -10,24 +10,20 @@ let onPass = null
 function handleOrientation(event) {
   if (cooldown) return
 
-  const beta = event.beta // front-to-back tilt: -180 to 180
+  const beta = event.beta
   if (beta == null) return
 
   if (beta > TILT_DOWN_THRESHOLD || beta < -TILT_DOWN_THRESHOLD) {
-    // Phone tilted down (screen faces floor)
-    triggerAction('correct')
+    trigger(onCorrect)
   } else if (beta < TILT_UP_THRESHOLD && beta > -TILT_UP_THRESHOLD) {
-    // Phone tilted up (screen faces ceiling)
-    triggerAction('pass')
+    trigger(onPass)
   }
 }
 
-function triggerAction(action) {
+function trigger(cb) {
   cooldown = true
   setTimeout(() => { cooldown = false }, COOLDOWN_MS)
-
-  if (action === 'correct' && onCorrect) onCorrect()
-  if (action === 'pass' && onPass) onPass()
+  if (cb) cb()
 }
 
 export function startListening(correctCb, passCb) {
