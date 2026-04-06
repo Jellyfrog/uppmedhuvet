@@ -98,6 +98,9 @@ export async function startGame() {
   timeLeft = roundSeconds
   showFlash = null
 
+  // Request fullscreen + landscape lock from user gesture context (Start button)
+  await requestFullscreen()
+
   // Auto-request motion permission (needs user gesture context)
   if (hasGyroscope && gyroNeedsPermission && !orientationGranted) {
     orientationGranted = await requestPermission()
@@ -127,7 +130,6 @@ function startCountdown() {
 async function startPlaying() {
   screen = 'playing'
   await acquireWakeLock()
-  await requestFullscreen()
 
   if (hasGyroscope && (orientationGranted || !gyroNeedsPermission)) {
     startListening(markCorrect, markPass)
@@ -139,11 +141,16 @@ async function startPlaying() {
   }, 1000)
 }
 
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern)
+}
+
 function mark(type, playSound) {
   if (screen !== 'playing' || tapCooldown) return
   tapCooldown = true
   setTimeout(() => { tapCooldown = false }, 500)
   results.push({ word: currentWord, result: type })
+  vibrate(type === 'correct' ? [200] : [100, 50, 100])
   resumeAudio()
   playSound()
   flash(type)
@@ -191,9 +198,13 @@ async function requestFullscreen() {
   if (rfs) {
     try {
       await rfs.call(el)
-      // Lock to landscape once in fullscreen (requires fullscreen on most browsers)
-      try { await screen.orientation.lock('landscape') } catch { /* lock not supported */ }
     } catch { /* fullscreen not available */ }
+  }
+  // Lock to landscape (requires fullscreen on most browsers)
+  try {
+    await screen.orientation.lock('landscape-primary')
+  } catch {
+    try { await screen.orientation.lock('landscape') } catch { /* lock not supported */ }
   }
 }
 function exitFullscreen() {

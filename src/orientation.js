@@ -22,10 +22,8 @@ function handleMotion(event) {
   if (cooldown) return
 
   if (z > TILT_THRESHOLD) {
-    vibrate(200)
     trigger(onCorrect)
   } else if (z < -TILT_THRESHOLD) {
-    vibrate([100, 50, 100])
     trigger(onPass)
   }
 }
@@ -34,10 +32,6 @@ function trigger(cb) {
   cooldown = true
   setTimeout(() => { cooldown = false }, COOLDOWN_MS)
   if (cb) cb()
-}
-
-function vibrate(pattern) {
-  if (navigator.vibrate) navigator.vibrate(pattern)
 }
 
 export function startListening(correctCb, passCb) {
