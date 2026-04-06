@@ -7,10 +7,11 @@ import {
 } from './orientation.js'
 
 const ROUND_SECONDS = 60
+const hasGyroscope = isSupported()
+const gyroNeedsPermission = needsPermission()
 
 export const categoryKeys = Object.keys(categories)
 
-// Reactive state
 let screen = $state('lang-select')
 let lang = $state('sv')
 let category = $state(null)
@@ -26,21 +27,18 @@ let timerInterval = null
 let countdownInterval = null
 let wakeLock = null
 let tapCooldown = false
+let flashTimeout = null
 
-// Derived
 let currentWord = $derived(words[wordIndex] || '')
 let correctCount = $derived(results.filter(r => r.result === 'correct').length)
 let passCount = $derived(results.filter(r => r.result === 'pass').length)
 let timerPercent = $derived((timeLeft / ROUND_SECONDS) * 100)
-const hasGyroscope = isSupported()
-let showFallback = $derived(!hasGyroscope || (needsPermission() && !orientationGranted))
+let showFallback = $derived(!hasGyroscope || (gyroNeedsPermission && !orientationGranted))
 
-// i18n helper
 export function tr(key) {
   return t(lang, key)
 }
 
-// Getters (export reactive values via functions)
 export function getScreen() { return screen }
 export function getLang() { return lang }
 export function getCategory() { return category }
@@ -55,8 +53,8 @@ export function getHasGyroscope() { return hasGyroscope }
 export function getShowFallback() { return showFallback }
 export function getOrientationGranted() { return orientationGranted }
 export function getResults() { return results }
+export function getNeedsPermission() { return gyroNeedsPermission }
 
-// Actions
 export function selectLanguage(l) {
   lang = l
   resumeAudio()
@@ -90,6 +88,7 @@ function startCountdown() {
     countdownNumber--
     if (countdownNumber <= 0) {
       clearInterval(countdownInterval)
+      countdownInterval = null
       startPlaying()
     }
   }, 1000)
@@ -100,8 +99,8 @@ async function startPlaying() {
   await acquireWakeLock()
   requestFullscreen()
 
-  if (hasGyroscope && (orientationGranted || !needsPermission())) {
-    startListening(() => markCorrect(), () => markPass())
+  if (hasGyroscope && (orientationGranted || !gyroNeedsPermission)) {
+    startListening(markCorrect, markPass)
   }
 
   timerInterval = setInterval(() => {
@@ -110,29 +109,23 @@ async function startPlaying() {
   }, 1000)
 }
 
-export function markCorrect() {
+function mark(type, playSound) {
   if (screen !== 'playing' || tapCooldown) return
   tapCooldown = true
   setTimeout(() => { tapCooldown = false }, 500)
-  results = [...results, { word: currentWord, result: 'correct' }]
-  playCorrect()
-  flash('correct')
+  results.push({ word: currentWord, result: type })
+  playSound()
+  flash(type)
   nextWord()
 }
 
-export function markPass() {
-  if (screen !== 'playing' || tapCooldown) return
-  tapCooldown = true
-  setTimeout(() => { tapCooldown = false }, 500)
-  results = [...results, { word: currentWord, result: 'pass' }]
-  playPass()
-  flash('pass')
-  nextWord()
-}
+export function markCorrect() { mark('correct', playCorrect) }
+export function markPass() { mark('pass', playPass) }
 
 function flash(type) {
+  if (flashTimeout) clearTimeout(flashTimeout)
   showFlash = type
-  setTimeout(() => { showFlash = null }, 400)
+  flashTimeout = setTimeout(() => { showFlash = null; flashTimeout = null }, 400)
 }
 
 function nextWord() {
@@ -152,7 +145,6 @@ function endGame() {
 export function goToMenu() { screen = 'menu' }
 export function playAgain() { selectCategory(category) }
 
-// Wake Lock
 async function acquireWakeLock() {
   if ('wakeLock' in navigator) {
     try { wakeLock = await navigator.wakeLock.request('screen') } catch {}
@@ -162,7 +154,6 @@ function releaseWakeLock() {
   if (wakeLock) { wakeLock.release(); wakeLock = null }
 }
 
-// Fullscreen
 function requestFullscreen() {
   const el = document.documentElement
   const rfs = el.requestFullscreen || el.webkitRequestFullscreen

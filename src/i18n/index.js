@@ -1,7 +1,19 @@
 import sv from './sv.js'
 import en from './en.js'
 
-const translations = { sv, en }
+const categoryEmojis = {
+  animals: '🐾',
+  movies: '🎬',
+  professions: '👷',
+  food: '🍕',
+  sports: '⚽',
+  celebrities: '⭐',
+}
+
+const translations = {
+  sv: { ...sv, categoryEmojis },
+  en: { ...en, categoryEmojis },
+}
 
 export function t(lang, key) {
   const keys = key.split('.')
@@ -12,5 +24,3 @@ export function t(lang, key) {
   }
   return value ?? key
 }
-
-export { translations }

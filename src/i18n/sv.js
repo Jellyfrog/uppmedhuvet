@@ -29,12 +29,4 @@ export default {
     sports: 'Sport',
     celebrities: 'Kändisar',
   },
-  categoryEmojis: {
-    animals: '🐾',
-    movies: '🎬',
-    professions: '👷',
-    food: '🍕',
-    sports: '⚽',
-    celebrities: '⭐',
-  },
 }

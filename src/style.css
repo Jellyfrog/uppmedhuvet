@@ -23,19 +23,11 @@ html, body {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* Flash overlays */
-.flash-correct {
-  animation: flash-green 0.4s ease-out forwards;
-}
-.flash-pass {
-  animation: flash-red 0.4s ease-out forwards;
+.flash-correct, .flash-pass {
+  animation: flash-out 0.4s ease-out forwards;
 }
 
-@keyframes flash-green {
-  0% { opacity: 0.7; }
-  100% { opacity: 0; }
-}
-@keyframes flash-red {
+@keyframes flash-out {
   0% { opacity: 0.7; }
   100% { opacity: 0; }
 }
