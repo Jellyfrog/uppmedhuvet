@@ -5,6 +5,9 @@ import {
   startListening, stopListening, requestPermission,
   isSupported, needsPermission,
 } from './orientation.js'
+import { WebHaptics } from 'web-haptics'
+
+const haptics = new WebHaptics()
 
 const TIME_OPTIONS = [30, 45, 60, 90, 120]
 const DEFAULT_TIME = 60
@@ -141,16 +144,12 @@ async function startPlaying() {
   }, 1000)
 }
 
-function vibrate(pattern) {
-  if (navigator.vibrate) navigator.vibrate(pattern)
-}
-
 function mark(type, playSound) {
   if (screen !== 'playing' || tapCooldown) return
   tapCooldown = true
   setTimeout(() => { tapCooldown = false }, 500)
   results.push({ word: currentWord, result: type })
-  vibrate(type === 'correct' ? [200] : [100, 50, 100])
+  haptics.trigger(type === 'correct' ? 'success' : 'error')
   resumeAudio()
   playSound()
   flash(type)
