@@ -1,8 +1,10 @@
 <script>
   import { selectLanguage } from '../state.svelte.js'
+
+  function focusOnMount(node) { node.focus() }
 </script>
 
-<section class="fixed inset-0 flex flex-col items-center justify-center gap-8 p-6 bg-bg">
+<section use:focusOnMount tabindex="-1" class="fixed inset-0 flex flex-col items-center justify-center gap-8 p-6 bg-bg outline-none">
   <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-center text-white">
     Upp med huvudet!
   </h1>

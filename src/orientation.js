@@ -29,7 +29,8 @@ function trigger(cb) {
 export function startListening(correctCb, passCb) {
   onCorrect = correctCb
   onPass = passCb
-  cooldown = false
+  cooldown = true
+  setTimeout(() => { cooldown = false }, COOLDOWN_MS)
   listener = handleOrientation
   window.addEventListener('deviceorientation', listener)
 }

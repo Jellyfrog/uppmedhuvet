@@ -6,18 +6,20 @@
   import Playing from './screens/Playing.svelte'
   import Results from './screens/Results.svelte'
   import RotateOverlay from './components/RotateOverlay.svelte'
+
+  let screen = $derived(getScreen())
 </script>
 
-{#if getScreen() === 'lang-select'}
+{#if screen === 'lang-select'}
   <LanguageSelect />
-{:else if getScreen() === 'menu'}
+{:else if screen === 'menu'}
   <CategorySelect />
-{:else if getScreen() === 'countdown'}
+{:else if screen === 'countdown'}
   <Countdown />
   <RotateOverlay />
-{:else if getScreen() === 'playing'}
+{:else if screen === 'playing'}
   <Playing />
   <RotateOverlay />
-{:else if getScreen() === 'results'}
+{:else if screen === 'results'}
   <Results />
 {/if}
